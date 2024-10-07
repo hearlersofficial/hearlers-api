@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "event-driven-msa-with-fastapi"
+version = "0.1.0"
+description = "MSA with FastAPI, DDD, CQRS, Event Sourcing, Hexagonal Architecture"
+authors = ["do-huni <orangnlp@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.115.0"
+uvicorn = "^0.31.0"
+kafka-python = "^2.0.2"
+sqlalchemy = "^2.0.35"
+alembic = "^1.13.3"
+pydantic = "^2.9.2"
+psycopg2 = "^2.9.9"
+python-dotenv = "^1.0.1"
+pydantic-settings = "^2.5.2"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+pytest-asyncio = "^0.24.0"
+black = "^24.8.0"
+isort = "^5.13.2"
+
+[tool.poetry.scripts]
+start-api-gateway = "python -m uvicorn services.api_gateway.app.main:app --host 0.0.0.0 --port 8000"
+start-user-service = "python -m uvicorn services.user_service.app.main:app --host 0.0.0.0 --port 8001"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

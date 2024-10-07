@@ -1,0 +1,33 @@
+# docker/Dockerfile.service_server
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# PostgreSQL 개발 패키지 및 기타 필요한 패키지 설치 (하나의 RUN 명령으로 묶기)
+RUN apt-get update && apt-get install -y libpq-dev gcc \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Poetry 설치
+RUN pip install --upgrade pip
+RUN pip install poetry
+
+# 루트의 pyproject.toml과 poetry.lock 복사
+COPY ../pyproject.toml ../poetry.lock ./
+
+# 의존성 설치 (Workspace 사용)
+RUN poetry config virtualenvs.create false
+RUN poetry install --no-dev --no-interaction --no-ansi
+
+# 서비스 코드 복사
+COPY ../common /app/common
+COPY ../services/service_server/app ./services/service_server/app
+
+# PYTHONPATH 설정
+ENV PYTHONPATH="/app/services:/app/common"
+
+# 포트 노출
+EXPOSE 8001
+
+# 실행 명령
+CMD ["uvicorn", "services.service_server.app.main:app", "--host", "0.0.0.0", "--port", "8001"]

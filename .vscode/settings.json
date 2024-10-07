@@ -1,0 +1,15 @@
+{
+  "python.languageServer": "Pylance",
+  "editor.formatOnSave": true,
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "always"
+  },
+  "python.analysis.extraPaths": ["./services"],
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/*.pyo": true
+  }
+}
