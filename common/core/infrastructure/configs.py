@@ -34,6 +34,8 @@ class Settings:
     # Kafka 설정
     KAFKA_BOOTSTRAP_SERVERS = get_env_variable('KAFKA_BOOTSTRAP_SERVERS')
 
+    #JWT 설정
+    APP_JWT_SECRET = get_env_variable('APP_JWT_SECRET')
 # 설정 객체 생성 및 확인
 try:
     settings = Settings()
