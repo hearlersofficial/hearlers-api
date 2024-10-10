@@ -1,14 +1,13 @@
-# common/core/message/base_message.py
 from abc import ABC, abstractmethod
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import ClassVar, Optional
 
 
+@dataclass
 class BaseMessage(ABC):
     MESSAGE_TYPE: ClassVar[str] = 'baseMessage'
-
-    def __init__(self, timestamp: Optional[datetime] = None):
-        self._timestamp = timestamp if timestamp is not None else datetime.now()
+    timestamp: datetime
 
     @abstractmethod
     def serialize(self) -> dict:
@@ -22,7 +21,3 @@ class BaseMessage(ABC):
     @property
     def message_type(self) -> str:
         return self.__class__.MESSAGE_TYPE
-
-    @property
-    def timestamp(self) -> datetime:
-        return self._timestamp

@@ -1,16 +1,15 @@
-# common/core/message/query/base_query.py
+from dataclasses import dataclass
 from datetime import datetime
-from typing import ClassVar, Optional
+from typing import ClassVar
+from uuid import UUID
 
 from common.core.message.base_message import BaseMessage
 
 
+@dataclass
 class BaseQuery(BaseMessage):
     MESSAGE_TYPE: ClassVar[str] = 'baseQuery'
-
-    def __init__(self, query_id: str, timestamp: Optional[datetime] = None):
-        super().__init__(timestamp)
-        self.query_id = query_id
+    query_id: UUID
 
     def serialize(self) -> dict:
         return {
@@ -20,8 +19,8 @@ class BaseQuery(BaseMessage):
         }
 
     @staticmethod
-    def deserialize(data: dict):
+    def deserialize(data: dict) -> 'BaseQuery':
         return BaseQuery(
-            query_id=data["query_id"],
+            query_id=UUID(data["query_id"]),
             timestamp=datetime.fromisoformat(data["timestamp"])
         )

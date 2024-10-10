@@ -12,7 +12,7 @@ from common.core.message.base_message import BaseMessage
 
 class Topic(Enum):
     # Commands
-    CREATE_USER_COMMAND = "create.user.command"
+    CREATE_KAKAO_USER_COMMAND = "create.kakao.user.command"
     UPDATE_USER_COMMAND = "update.user.command"
     DELETE_USER_COMMAND = "delete.user.command"
     
