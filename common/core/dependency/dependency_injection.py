@@ -1,5 +1,6 @@
 # common/core/dependencies.py
 from fastapi import Depends
+from sqlalchemy.orm import declarative_base
 
 from common.core.application.message_bus import MessageBus
 from common.core.infrastructure.configs import Settings

@@ -28,19 +28,11 @@ class Settings:
     DATABASE_NAME = get_env_variable('DATABASE_NAME')
 
     # SQLAlchemy 설정 (옵션)
-    SQLALCHEMY_DATABASE_URL = os.getenv('SQLALCHEMY_DATABASE_URL')
+    SQLALCHEMY_DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
+    ECHO_SQL = get_env_variable('ECHO_SQL').lower() == 'true'
 
     # Kafka 설정
     KAFKA_BOOTSTRAP_SERVERS = get_env_variable('KAFKA_BOOTSTRAP_SERVERS')
-
-    @property
-    def database_url(self) -> str:
-        if not self.SQLALCHEMY_DATABASE_URL:
-            return (
-                f"postgresql://{self.DATABASE_USER}:{self.DATABASE_PASSWORD}"
-                f"@{self.DATABASE_HOST}:{self.DATABASE_PORT}/{self.DATABASE_NAME}"
-            )
-        return self.SQLALCHEMY_DATABASE_URL
 
 # 설정 객체 생성 및 확인
 try:

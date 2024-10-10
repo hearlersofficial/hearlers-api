@@ -1,7 +1,7 @@
 from venv import logger
 
-from service_server.app.domain.user import User
-from service_server.app.infrastructure.repositories.psql_user_repository.psql_user_repository import \
+from service_server.app.user.domain.user import User, UserProps
+from service_server.app.user.infrastructure.repositories.psql_user_repository.psql_user_repository import \
     PsqlUserRepository
 
 from common.core.application.base_message_handler import BaseMessageHandler
@@ -16,6 +16,6 @@ class CreateUserHandler(BaseMessageHandler):
 
 
     def handle(self, message: CreateUserCommand):
-        user = User(id=message.id, name=message.name, email=message.email)
+        user = User(props=UserProps(username=message.name,email=message.email), id = message.id)
         logger.info(f"User created: {user}")
 

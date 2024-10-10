@@ -4,7 +4,7 @@ from typing import Any, Generic, List, TypeVar
 from uuid import UUID
 
 from common.core.domain.result import Result
-from common.core.event.base_event import BaseEvent
+from common.core.message.event.base_event import BaseEvent
 
 
 class AggregateRootProps:

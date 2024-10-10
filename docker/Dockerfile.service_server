@@ -21,7 +21,7 @@ RUN poetry install --no-dev --no-interaction --no-ansi
 
 # 서비스 코드 복사
 COPY ../common /app/common
-COPY ../services/service_server/app ./services/service_server/app
+COPY ../services/service_server ./services/service_server
 
 # PYTHONPATH 설정
 ENV PYTHONPATH="/app/services:/app/common"

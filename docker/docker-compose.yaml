@@ -9,6 +9,7 @@ services:
       - "8000:8000"
     depends_on:
       - kafka
+      - kafka-ui
       - service_server
     env_file:
       - ../.env.dev
@@ -20,17 +21,21 @@ services:
     ports:
       - "8001:8001"
     depends_on:
-      - db
-      - kafka
+      db:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+      kafka-ui:
+        condition: service_started
     env_file:
       - ../.env.dev
 
   db:
     image: postgres:14
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: user_db
+      POSTGRES_USER: hearlersu
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: hearlers_db
     ports:
       - "5432:5432"
     volumes:
@@ -42,6 +47,11 @@ services:
       ALLOW_ANONYMOUS_LOGIN: "yes"
     ports:
       - "2181:2181"
+    healthcheck:
+      test: ["CMD-SHELL", "echo ruok | nc -w 2 zookeeper 2181"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
 
   kafka:
     image: bitnami/kafka:latest
@@ -54,12 +64,14 @@ services:
     ports:
       - "9092:9092"
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD", "kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:9092"]
+      test:
+        ["CMD", "bash", "-c", "unset", "JMX_PORT", ";", "kafka-topics.sh", "--zookeeper", "zookeeper:2181", "--list"]
       interval: 10s
-      timeout: 5s
-      retries: 10
+      timeout: 10s
+      retries: 4
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
