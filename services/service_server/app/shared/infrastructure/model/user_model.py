@@ -1,11 +1,12 @@
 from service_server.app.shared.infrastructure.model.base_model import BaseModel
 from service_server.app.shared.infrastructure.model.kakao_model import \
     KakaoModel
-from service_server.app.user.domain.enum.age_range import AgeRange
-from service_server.app.user.domain.enum.auth_channel import AuthChannel
-from service_server.app.user.domain.enum.gender import Gender
 from sqlalchemy import Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from common.enum.user.age_range import AgeRange
+from common.enum.user.auth_channel import AuthChannel
+from common.enum.user.gender import Gender
 
 
 class UserModel(BaseModel):

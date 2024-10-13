@@ -13,7 +13,7 @@ class BaseCommand(BaseMessage):
 
     def serialize(self) -> dict:
         return {
-            "command_id": self.command_id,
+            "command_id": str(self.command_id),
             "timestamp": self.timestamp.isoformat(),
             "message_type": self.MESSAGE_TYPE
         }

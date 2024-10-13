@@ -5,7 +5,7 @@ from service_server.app.user.domain.user import User, UserProps
 from uuid6 import uuid7
 
 
-class UserMapper:
+class PsqlUserMapper:
     @staticmethod
     def to_model(user: User) -> UserModel:
         """도메인 객체를 데이터베이스 모델로 변환"""

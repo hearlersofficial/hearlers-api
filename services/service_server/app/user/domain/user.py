@@ -4,14 +4,13 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
-from service_server.app.user.domain.enum.age_range import AgeRange
-from service_server.app.user.domain.enum.auth_channel import AuthChannel
-from service_server.app.user.domain.enum.gender import Gender
 from uuid6 import uuid7
 
 from common.core.domain.aggregate_root import AggregateRoot, AggregateRootProps
 from common.core.domain.result import Result
-from common.core.message.event.base_event import BaseEvent
+from common.enum.user.age_range import AgeRange
+from common.enum.user.auth_channel import AuthChannel
+from common.enum.user.gender import Gender
 
 
 @dataclass

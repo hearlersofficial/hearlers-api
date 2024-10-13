@@ -13,7 +13,7 @@ class BaseQuery(BaseMessage):
 
     def serialize(self) -> dict:
         return {
-            "query_id": self.query_id,
+            "query_id": str(self.query_id),
             "timestamp": self.timestamp.isoformat(),
             "message_type": self.MESSAGE_TYPE  
         }

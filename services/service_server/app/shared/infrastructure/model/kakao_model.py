@@ -3,11 +3,12 @@ from datetime import datetime
 
 from service_server.app.shared.infrastructure.model.base_model import BaseModel
 from service_server.app.shared.infrastructure.model.user_model import UserModel
-from service_server.app.user.domain.enum.age_range import AgeRange
-from service_server.app.user.domain.enum.auth_channel import AuthChannel
-from service_server.app.user.domain.enum.gender import Gender
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from common.enum.user.age_range import AgeRange
+from common.enum.user.auth_channel import AuthChannel
+from common.enum.user.gender import Gender
 
 
 class KakaoModel(BaseModel):

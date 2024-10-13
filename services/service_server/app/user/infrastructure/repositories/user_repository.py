@@ -1,23 +1,24 @@
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from typing import List, Optional
 from uuid import UUID
 
 from service_server.app.user.domain.user import User
 
+from common.enum.user.auth_channel import AuthChannel
 
+
+@dataclass
 class FindOnePropsInUserRepository:
-    def __init__(self, user_id: Optional[UUID] = None, email: Optional[str] = None):
-        self.user_id = user_id
-        self.email = email
+    user_id: UUID
 
+@dataclass
 class FindManyPropsInUserRepository:
-    def __init__(self, user_id: Optional[UUID] = None, email: Optional[str] = None):
-        self.user_id = user_id
-        self.email = email
+    auth_channel: AuthChannel
 
 class UserRepository(ABC):
     @abstractmethod
-    def save(self, user: User):
+    def create(self, user: User) -> User:
         pass
 
     @abstractmethod

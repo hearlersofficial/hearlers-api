@@ -10,6 +10,8 @@ event-driven-architecture를 기반으로 하여 확장성 있는 애플리케�
 
 이는 단일 진입점 제공 및 내부 서비스와의 독립성을 보장할 수 있음과 동시에 EDA 아키텍처를 구현한 순간 gateway를 나누는 것의 구현 복잡도가 낮기 때문 입니다.
 
+CQRS 패턴은 1단계 (command 및 query 로직의 분리)까지만 우선 적용합니다. 비즈니스가 확장되면 non-sql queryDB및 query 서버로 분리합니다.
+
 | Category               | description                                                                                         |
 | ---------------------- | --------------------------------------------------------------------------------------------------- |
 | Concepts               | Domain Driven Design (Subdomains, Bounded Contexts, Ubiquitous Language, Aggregates, Value Objects) |
