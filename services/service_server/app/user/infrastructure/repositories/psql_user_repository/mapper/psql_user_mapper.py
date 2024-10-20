@@ -1,6 +1,9 @@
 from datetime import datetime
 
+from service_server.app.shared.infrastructure.model.kakao_model import \
+    KakaoModel
 from service_server.app.shared.infrastructure.model.user_model import UserModel
+from service_server.app.user.domain.kakao import Kakao
 from service_server.app.user.domain.user import User, UserProps
 from uuid6 import uuid7
 
@@ -18,7 +21,7 @@ class PsqlUserMapper:
             gender=user.props.gender,
             age_range=user.props.age_range,
             auth_channel=user.props.auth_channel,
-            kakao=user.props.kakao,
+            kakao = PsqlUserMapper.to_kakao_model(user.props.kakao) if user.props.kakao is not None else None,
             created_at=user.props.created_at,
             updated_at=user.props.updated_at,
             deleted_at=user.props.deleted_at
@@ -41,4 +44,12 @@ class PsqlUserMapper:
             deleted_at=user_model.deleted_at
         )
         return User(user_props, user_model.id)
+    
+    @staticmethod
+    def to_kakao_model(kakao: Kakao) -> KakaoModel:
+        """카카오 도메인 객체를 모델로 변환"""
+        return KakaoModel(
+            id=kakao.id,
+            unique_id=kakao.props.unique_id,
+        )
     

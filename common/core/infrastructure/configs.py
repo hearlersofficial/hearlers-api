@@ -28,7 +28,7 @@ class Settings:
     DATABASE_NAME = get_env_variable('DATABASE_NAME')
 
     # SQLAlchemy 설정 (옵션)
-    SQLALCHEMY_DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
+    SQLALCHEMY_DATABASE_URL = f"postgresql+asyncpg://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
     ECHO_SQL = get_env_variable('ECHO_SQL').lower() == 'true'
 
     # Kafka 설정

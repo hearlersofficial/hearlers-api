@@ -10,6 +10,7 @@ from service_server.app.user import get_user_subscriber_manager
 from service_server.app.user.controller.user_controller import user_router
 
 from common.core.infrastructure.subscribe_manager import SubscriberManager
+from common.filter.exception_middleware import global_exception_handler
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -50,6 +51,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 
+app.add_exception_handler(Exception,global_exception_handler)
 app.include_router(user_router, prefix="/users")
 # app.include_router(chat_router, prefix="/chats")
 

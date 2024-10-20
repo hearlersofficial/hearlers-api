@@ -1,6 +1,8 @@
 from typing import List, Optional
 from uuid import UUID
 
+from fastapi import Depends
+from service_server.app.shared.infrastructure.db import get_db_session
 from service_server.app.shared.infrastructure.model.user_model import UserModel
 from service_server.app.user.domain.user import User
 from service_server.app.user.infrastructure.repositories.psql_user_repository.mapper.psql_user_mapper import \
@@ -35,3 +37,6 @@ class PSQLUserRepository(UserRepository):
         """주어진 auth_channel로 여러 사용자 조회"""
         user_models = self.db_session.query(UserModel).filter(UserModel.auth_channel == props.auth_channel).all()
         return [PsqlUserMapper.to_domain(user_model) for user_model in user_models]
+
+def get_user_repository(db_session: Session = Depends(get_db_session)) -> UserRepository:
+    return PSQLUserRepository(db_session)
