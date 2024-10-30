@@ -1,46 +1,6 @@
 version: "3.8"
 
 services:
-  api_gateway:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile.api_gateway
-    ports:
-      - "8000:8000"
-    depends_on:
-      - kafka
-      - kafka-ui
-      - service_server
-    env_file:
-      - ../.env.dev
-
-  service_server:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile.service_server
-    ports:
-      - "8001:8001"
-    depends_on:
-      db:
-        condition: service_started
-      kafka:
-        condition: service_healthy
-      kafka-ui:
-        condition: service_started
-    env_file:
-      - ../.env.dev
-
-  db:
-    image: postgres:14
-    environment:
-      POSTGRES_USER: hearlersu
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: hearlers_db
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
   zookeeper:
     image: bitnami/zookeeper:latest
     environment:
@@ -58,8 +18,8 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: PLAINTEXT://:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     ports:
       - "9092:9092"

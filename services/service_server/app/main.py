@@ -1,61 +1,64 @@
 import asyncio
 import logging
 import os
+from concurrent import futures
 from contextlib import asynccontextmanager
 
+import grpc.aio  # gRPC 비동기 서버 사용
 from alembic import command, config
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI
 from service_server.app.user import get_user_subscriber_manager
-from service_server.app.user.controller.user_controller import user_router
 
 from common.core.infrastructure.subscribe_manager import SubscriberManager
-from common.filter.exception_middleware import global_exception_handler
+
+# 여기에 gRPC 서비스 파일을 import해야 합니다.
+# 예를 들어, UserService를 추가하려면 아래와 같이 수정
+# from service_server.app.user.proto.user_pb2_grpc import add_UserServiceServicer_to_server
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 load_dotenv()
-# alembic_cfg = config.Config(os.path.join(os.path.dirname(__file__), 'alembic.ini'))
-# script_location = os.path.join(os.path.dirname(__file__), 'alembic')
-# alembic_cfg.set_main_option("script_location", script_location)
 
 def run_migrations():
     logger.info("Starting automatic migration")
     try:
-        # 직접 비동기 작업 호출
-        # command.revision(alembic_cfg, message="automatic migration", autogenerate=True)
-        # logger.info("Migration files created successfully")
-
+        # DB 마이그레이션
         # command.upgrade(alembic_cfg, "head")  # 최신 마이그레이션으로 업그레이드
         logger.info("Database upgraded to the latest version")
     except Exception as e:
         logger.error(f"Error during migration: {e}")
         raise
 
-
 @asynccontextmanager
-async def lifespan(app: FastAPI):
-
+async def setup_services():
+    # Kafka 컨슈머 초기화
     user_subscriber_manager = await get_user_subscriber_manager()
 
     logger.info("Starting user subscriber manager")
-    # 컨슈머 시작
     asyncio.create_task(user_subscriber_manager.start_consumers())
-    
+
+    # DB 마이그레이션 실행
     run_migrations()
-    yield
-    
-    # 컨슈머 중지
+    yield  # gRPC 서버가 종료될 때까지 서비스 유지
+
+    # 서비스가 종료될 때 Kafka 컨슈머를 중지할 수 있습니다.
     # await user_subscriber_manager.stop_consumers()
 
-app = FastAPI(lifespan=lifespan)
+async def serve():
+    async with setup_services():
+        server = grpc.aio.server()
+        
+        # gRPC 서비스 등록 (예: add_UserServiceServicer_to_server)
+        # add_UserServiceServicer_to_server(UserService(), server)
+        
+        # gRPC 서버 포트 설정
+        server.add_insecure_port('[::]:50051')
+        logger.info("gRPC server starting on port 50051")
+        
+        await server.start()
+        await server.wait_for_termination()
 
-
-app.add_exception_handler(Exception,global_exception_handler)
-app.include_router(user_router, prefix="/users")
-# app.include_router(chat_router, prefix="/chats")
-
-
-@app.get("/")
-def read_root():
-    return {"message": "User Service is running"}
+if __name__ == "__main__":
+    # 비동기 gRPC 서버 실행
+    asyncio.run(serve())

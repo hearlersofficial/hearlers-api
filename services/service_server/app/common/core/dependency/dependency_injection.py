@@ -1,3 +1,4 @@
+# common/core/dependencies.py
 
 from common.core.application.message_bus import MessageBus
 from common.core.infrastructure.configs import Settings

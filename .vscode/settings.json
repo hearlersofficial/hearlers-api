@@ -11,5 +11,13 @@
     "**/__pycache__": true,
     "**/*.pyc": true,
     "**/*.pyo": true
+  },
+  "protoc": {
+    "options": [
+      "--proto_path=${workspaceFolder}/proto",
+      "--proto_path=${workspaceFolder}/", // 최상위 폴더 포함
+      "--proto_path=../",
+      "--proto_path=/Users/do-huni/dev/project/hearlers-api/proto"
+    ]
   }
 }

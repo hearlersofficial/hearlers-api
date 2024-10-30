@@ -20,6 +20,8 @@ asyncpg = "^0.29.0"
 databases = "^0.9.0"
 uuid6 = "^2024.7.10"
 python-jose = "^3.3.0"
+grpcio = "^1.67.0"
+protobuf = "^5.28.3"
 
 
 [tool.poetry.group.dev.dependencies]
